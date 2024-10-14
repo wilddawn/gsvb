@@ -28,7 +28,7 @@ gsvb.fit(
   verbose = TRUE,
   thresh = 0.02,
   l = 5,
-  ordering = 0,
+  ordering = 2,
   init_method = "lasso"
 )
 }

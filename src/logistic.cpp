@@ -8,13 +8,17 @@ Rcpp::List fit_logistic(vec y, mat X, uvec groups, const double lambda,
     const double a0, const double b0, vec mu, vec s, vec g, 
     const bool diag_cov, bool track_elbo, const uword track_elbo_every, 
     const uword track_elbo_mcn, const double thresh, const int l, 
-    unsigned int niter, unsigned int alg, double tol, bool verbose)
+    unsigned int niter, unsigned int alg, double tol, bool verbose,
+	const uword ordering)
 {
     const uword n = X.n_rows;
     const uword p = X.n_cols;
     
     const uvec ugroups = arma::unique(groups);
     uvec it_groups = ugroups;
+	uvec g_order = ugroups;
+
+
     const uword M = ugroups.size();
     const double w = a0 / (a0 + b0);
     
@@ -83,6 +87,27 @@ Rcpp::List fit_logistic(vec y, mat X, uvec groups, const double lambda,
 	    XAX = X.t() * diagmat(a(jaak_vp)) * X;
 	}
 
+	if (ordering == 1) 
+	{
+		// Rcpp::Rcout << "Order by rand\n";
+		// random ordering
+		g_order = arma::shuffle(ugroups);
+	} 
+	else if (ordering == 2) 
+	{
+		// Rcpp::Rcout << "Order by mag\n";
+		// sort by magnitude of mu
+		vec beta_mag = vec(ugroups.size(), arma::fill::zeros);
+		for (uword i = 0; i < ugroups.size(); ++i) 
+		{
+			uvec G = find(groups == ugroups(i));
+			beta_mag(i) = arma::norm(mu(G), 2);
+		}
+		g_order = ugroups(sort_index(beta_mag, "descend"));
+	}	
+
+
+
 	// for (int i = it_groups.size() - 1; i >= 0; --i) {
 	//     uword group = it_groups(i);
 	//     uvec G  = arma::find(groups == group);
@@ -93,7 +118,7 @@ Rcpp::List fit_logistic(vec y, mat X, uvec groups, const double lambda,
 
 	// update mu, sigma, gamma
 	// for (uword group : it_groups)
-	for (uword group : ugroups)
+	for (uword group : g_order)
 	{
 	    uvec G  = arma::find(groups == group);
 	    

@@ -13,8 +13,8 @@ elbo_linear_u <- function(yty, yx, xtx, groups, n, p, mu, Ss, g, tau_a, tau_b, l
     .Call(`_gsvb_elbo_linear_u`, yty, yx, xtx, groups, n, p, mu, Ss, g, tau_a, tau_b, lambda, a0, b0, tau_a0, tau_b0, mcn, approx, approx_thresh)
 }
 
-fit_logistic <- function(y, X, groups, lambda, a0, b0, mu, s, g, diag_cov, track_elbo, track_elbo_every, track_elbo_mcn, thresh, l, niter, alg, tol, verbose) {
-    .Call(`_gsvb_fit_logistic`, y, X, groups, lambda, a0, b0, mu, s, g, diag_cov, track_elbo, track_elbo_every, track_elbo_mcn, thresh, l, niter, alg, tol, verbose)
+fit_logistic <- function(y, X, groups, lambda, a0, b0, mu, s, g, diag_cov, track_elbo, track_elbo_every, track_elbo_mcn, thresh, l, niter, alg, tol, verbose, ordering) {
+    .Call(`_gsvb_fit_logistic`, y, X, groups, lambda, a0, b0, mu, s, g, diag_cov, track_elbo, track_elbo_every, track_elbo_mcn, thresh, l, niter, alg, tol, verbose, ordering)
 }
 
 elbo_logistic <- function(y, X, groups, mu, s, g, Ss, lambda, w, mcn, diag) {

@@ -78,7 +78,7 @@ gsvb.fit <- function(y, X, groups, family="gaussian", intercept=TRUE,
     s=apply(X, 2, function(x) 1/sqrt(sum(x^2)*tau_a0/tau_b0+2*lambda)),
     g=rep(0.5, ncol(X)), track_elbo=TRUE, track_elbo_every=5, 
     track_elbo_mcn=5e2, niter=150, niter.refined=20, 
-    tol=1e-3, verbose=TRUE, thresh=0.02, l=5, ordering=0, init_method="lasso") 
+    tol=1e-3, verbose=TRUE, thresh=0.02, l=5, ordering=2, init_method="lasso") 
 {
     family <- pmatch(family, c("gaussian", "binomial-jensens", "binomial-jaakkola", 
 	    "binomial-refined", "poisson"))
@@ -180,13 +180,13 @@ gsvb.fit <- function(y, X, groups, family="gaussian", intercept=TRUE,
 	diag_covariance <- TRUE
 	f <- fit_logistic(y, X, groups, lambda, a0, b0,
 	    mu, s, g, diag_covariance, track_elbo, track_elbo_every,
-	    track_elbo_mcn, thresh, l, niter, 2, tol, verbose)
+	    track_elbo_mcn, thresh, l, niter, 2, tol, verbose, ordering)
     }
     if (family == 3) # LOGISTIC - JAAKKOLA BOUND
     {
 	f <- fit_logistic(y, X, groups, lambda, a0, b0,
 	    mu, s, g, diag_covariance, track_elbo, track_elbo_every,
-	    track_elbo_mcn, thresh, l, niter, 3, tol, verbose)
+	    track_elbo_mcn, thresh, l, niter, 3, tol, verbose, ordering)
     }
     if (family == 4) # LOGISTIC - OUR BOUND
     {
@@ -195,13 +195,13 @@ gsvb.fit <- function(y, X, groups, family="gaussian", intercept=TRUE,
 
 	f <- fit_logistic(y, X, groups, lambda, a0, b0,
 	    mu, s, g, diag_covariance, FALSE, track_elbo_every,
-	    track_elbo_mcn, thresh, l, niter, 3, tol, verbose)
+	    track_elbo_mcn, thresh, l, niter, 3, tol, verbose, ordering)
 
 	# if mu is provided by the user then this input is taken
 	# and refined with our tight upper bound.
 	f <- fit_logistic(y, X, groups, lambda, a0, b0,
 	    f$mu, f$s, f$g, diag_covariance, track_elbo, track_elbo_every,
-	    track_elbo_mcn, thresh, l, niter.refined, 1, tol, verbose)
+	    track_elbo_mcn, thresh, l, niter.refined, 1, tol, verbose, ordering)
     }
     if (family == 5) # POISSON REG
     {

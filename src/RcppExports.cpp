@@ -101,8 +101,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // fit_logistic
-Rcpp::List fit_logistic(vec y, mat X, uvec groups, const double lambda, const double a0, const double b0, vec mu, vec s, vec g, const bool diag_cov, bool track_elbo, const uword track_elbo_every, const uword track_elbo_mcn, const double thresh, const int l, unsigned int niter, unsigned int alg, double tol, bool verbose);
-RcppExport SEXP _gsvb_fit_logistic(SEXP ySEXP, SEXP XSEXP, SEXP groupsSEXP, SEXP lambdaSEXP, SEXP a0SEXP, SEXP b0SEXP, SEXP muSEXP, SEXP sSEXP, SEXP gSEXP, SEXP diag_covSEXP, SEXP track_elboSEXP, SEXP track_elbo_everySEXP, SEXP track_elbo_mcnSEXP, SEXP threshSEXP, SEXP lSEXP, SEXP niterSEXP, SEXP algSEXP, SEXP tolSEXP, SEXP verboseSEXP) {
+Rcpp::List fit_logistic(vec y, mat X, uvec groups, const double lambda, const double a0, const double b0, vec mu, vec s, vec g, const bool diag_cov, bool track_elbo, const uword track_elbo_every, const uword track_elbo_mcn, const double thresh, const int l, unsigned int niter, unsigned int alg, double tol, bool verbose, const uword ordering);
+RcppExport SEXP _gsvb_fit_logistic(SEXP ySEXP, SEXP XSEXP, SEXP groupsSEXP, SEXP lambdaSEXP, SEXP a0SEXP, SEXP b0SEXP, SEXP muSEXP, SEXP sSEXP, SEXP gSEXP, SEXP diag_covSEXP, SEXP track_elboSEXP, SEXP track_elbo_everySEXP, SEXP track_elbo_mcnSEXP, SEXP threshSEXP, SEXP lSEXP, SEXP niterSEXP, SEXP algSEXP, SEXP tolSEXP, SEXP verboseSEXP, SEXP orderingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -125,7 +125,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< unsigned int >::type alg(algSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(fit_logistic(y, X, groups, lambda, a0, b0, mu, s, g, diag_cov, track_elbo, track_elbo_every, track_elbo_mcn, thresh, l, niter, alg, tol, verbose));
+    Rcpp::traits::input_parameter< const uword >::type ordering(orderingSEXP);
+    rcpp_result_gen = Rcpp::wrap(fit_logistic(y, X, groups, lambda, a0, b0, mu, s, g, diag_cov, track_elbo, track_elbo_every, track_elbo_mcn, thresh, l, niter, alg, tol, verbose, ordering));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -294,7 +295,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_gsvb_fit_linear", (DL_FUNC) &_gsvb_fit_linear, 19},
     {"_gsvb_elbo_linear_c", (DL_FUNC) &_gsvb_elbo_linear_c, 19},
     {"_gsvb_elbo_linear_u", (DL_FUNC) &_gsvb_elbo_linear_u, 19},
-    {"_gsvb_fit_logistic", (DL_FUNC) &_gsvb_fit_logistic, 19},
+    {"_gsvb_fit_logistic", (DL_FUNC) &_gsvb_fit_logistic, 20},
     {"_gsvb_elbo_logistic", (DL_FUNC) &_gsvb_elbo_logistic, 11},
     {"_gsvb_fit_poisson", (DL_FUNC) &_gsvb_fit_poisson, 16},
     {"_gsvb_elbo_poisson", (DL_FUNC) &_gsvb_elbo_poisson, 9},
